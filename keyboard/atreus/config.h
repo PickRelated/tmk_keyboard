@@ -18,6 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#define LEONARDO_PRO_MICRO
+
 
 /* USB Device descriptor parameter */
 #define VENDOR_ID       0x16C0
@@ -29,7 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* key matrix size */
 #define MATRIX_ROWS 4
-#define MATRIX_COLS 11
+#define MATRIX_COLS 13
 
 /* define if matrix has ghost */
 //#define MATRIX_HAS_GHOST

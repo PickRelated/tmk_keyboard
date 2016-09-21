@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 void led_set(uint8_t usb_led)
 {
+#ifdef LEONARDO_PRO_MICRO
     if (usb_led & (1<<USB_LED_CAPS_LOCK)) {
         // output low
         DDRB |= (1<<2);
@@ -31,4 +32,15 @@ void led_set(uint8_t usb_led)
         DDRB &= ~(1<<2);
         PORTB &= ~(1<<2);
     }
+#else
+    if (usb_led & (1<<USB_LED_CAPS_LOCK)) {
+        // output low
+        DDRF |= (1<<4);
+        PORTF &= ~(1<<4);
+    } else {
+        // Hi-Z
+        DDRF &= ~(1<<4);
+        PORTF &= ~(1<<4);
+    }
+#endif
 }
