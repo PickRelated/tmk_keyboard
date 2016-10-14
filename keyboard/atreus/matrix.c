@@ -161,19 +161,19 @@ static matrix_row_t read_cols(void)
            (PINB&(1<<1) ? 0 : (1<<9)) |
            (PINB&(1<<0) ? 0 : (1<<10)) ;
 #elif defined LEONARDO_PRO_MICRO
-    return (PINF&(1<<5) ? 0 : (1<<12)) |
-           (PINF&(1<<6) ? 0 : (1<<11)) |
-           (PINF&(1<<7) ? 0 : (1<<10)) |
-           (PINB&(1<<1) ? 0 : (1<<9)) |
-           (PINB&(1<<3) ? 0 : (1<<8)) |
-           (PINB&(1<<2) ? 0 : (1<<7)) |
-           (PINB&(1<<6) ? 0 : (1<<6)) |
-           (PINB&(1<<5) ? 0 : (1<<5)) |
-           (PINB&(1<<4) ? 0 : (1<<4)) |
-           (PINE&(1<<6) ? 0 : (1<<3)) |
-           (PIND&(1<<7) ? 0 : (1<<2)) |
-           (PINC&(1<<6) ? 0 : (1<<1)) |
-           (PIND&(1<<4) ? 0 : (1<<0)) ;
+    return (PINF&(1<<5) ? 0 : (1<<0)) |
+           (PINF&(1<<6) ? 0 : (1<<1)) |
+           (PINF&(1<<7) ? 0 : (1<<2)) |
+           (PINB&(1<<1) ? 0 : (1<<3)) |
+           (PINB&(1<<3) ? 0 : (1<<4)) |
+           (PINB&(1<<2) ? 0 : (1<<5)) |
+           (PINB&(1<<6) ? 0 : (1<<12)) |
+           (PINB&(1<<5) ? 0 : (1<<6)) |
+           (PINB&(1<<4) ? 0 : (1<<7)) |
+           (PINE&(1<<6) ? 0 : (1<<8)) |
+           (PIND&(1<<7) ? 0 : (1<<9)) |
+           (PINC&(1<<6) ? 0 : (1<<10)) |
+           (PIND&(1<<4) ? 0 : (1<<11)) ;
 #else
     return (PINB&(1<<7) ? 0 : (1<<10)) |
            (PIND&(1<<6) ? 0 : (1<<9)) |
@@ -200,10 +200,8 @@ static void unselect_rows(void)
 }
 
 #define ROW_COUNT 4
-#ifdef TEENSY
+#if defined TEENSY || defined LEONARDO_PRO_MICRO
 int rows[ROW_COUNT] = {0, 1, 2, 3};
-#elif defined LEONARDO_PRO_MICRO
-int rows[ROW_COUNT] = {3, 2, 1, 0};
 #else
 int rows[ROW_COUNT] = {0, 1, 3, 2};
 #endif
