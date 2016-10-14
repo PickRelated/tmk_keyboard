@@ -21,17 +21,17 @@
   KC_LCTL,  KC_LALT)
 
 #define LAYER_DIGITS CUSTOM_KEYMAP(\
-  KC_NO,    KC_NO,    KC_NO,    KC_QUOT,          SHIFT(KC_LBRC),  SHIFT(KC_RBRC),  KC_EQL,   KC_7,     KC_8,  KC_9,    KC_PSLS,  KC_TRNS,  \
-  KC_NO,    KC_NO,    KC_NO,    SHIFT(KC_4),      SHIFT(KC_9),     SHIFT(KC_0),     KC_PMNS,  KC_4,     KC_5,  KC_6,    KC_PPLS,  KC_TRNS,  \
-  KC_NO,    KC_NO,    KC_NO,    SHIFT(KC_QUOT),   KC_LBRC,         KC_RBRC,         KC_CALC,  KC_1,     KC_2,  KC_3,    KC_PAST,  KC_TRNS,  \
-  KC_NO,    KC_NO,    KC_NO,    SHIFT(KC_MINUS),  KC_MINUS,        KC_LSFT,         KC_TRNS,  KC_TRNS,  KC_0,  KC_DOT,  KC_PEQL,  KC_TRNS,  \
-  KC_TRNS,  KC_TRNS)
+  SHIFT(KC_GRAVE),  KC_NO,    SHIFT(KC_QUOT),  SHIFT(KC_4),      SHIFT(KC_LBRC),  SHIFT(KC_RBRC),  KC_EQL,   KC_7,     KC_8,  KC_9,    KC_PSLS,  KC_TRNS,  \
+  KC_NO,            KC_NO,    KC_QUOT,         KC_MINUS,         SHIFT(KC_9),     SHIFT(KC_0),     KC_PMNS,  KC_4,     KC_5,  KC_6,    KC_PPLS,  KC_TRNS,  \
+  KC_NO,            KC_NO,    KC_GRAVE,        SHIFT(KC_MINUS),  KC_LBRC,         KC_RBRC,         KC_CALC,  KC_1,     KC_2,  KC_3,    KC_PAST,  KC_TRNS,  \
+  KC_NO,            KC_NO,    KC_NO,           KC_NO,            KC_MINUS,        KC_LSFT,         KC_TRNS,  KC_TRNS,  KC_0,  KC_DOT,  KC_PEQL,  KC_TRNS,  \
+  KC_TRNS,          KC_TRNS)
 
 #define LAYER_NAV CUSTOM_KEYMAP(\
-  KC_SLEP,  KC_NO,    KC_NO,  KC_NO,  KC_NO,    KC_NO,    KC_NO,  KC_HOME,  KC_UP,    KC_END,   KC_MNXT,  KC_CALC,  \
-  KC_NO,    KC_NO,    KC_NO,  KC_NO,  KC_NO,    KC_NO,    KC_NO,  KC_LEFT,  KC_DOWN,  KC_RGHT,  KC_MPLY,  KC_VOLU,  \
-  KC_NO,    KC_NO,    KC_NO,  KC_NO,  KC_NO,    KC_NO,    KC_NO,  KC_PGUP,  KC_NO,    KC_PGDN,  KC_MPRV,  KC_VOLD,  \
-  KC_NO,    KC_NO,    KC_NO,  KC_NO,  KC_TRNS,  KC_TRNS,  KC_NO,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_MUTE,  \
+  KC_SLEP,  KC_NO,    KC_NO,  KC_NO,  KC_NO,          KC_NO,    KC_FN5,  KC_HOME,  KC_UP,    KC_END,   KC_MNXT,  KC_CALC,  \
+  KC_NO,    KC_NO,    KC_NO,  KC_NO,  KC_NO,          KC_NO,    KC_FN6,  KC_LEFT,  KC_DOWN,  KC_RGHT,  KC_MPLY,  KC_VOLU,  \
+  KC_NO,    KC_NO,    KC_NO,  KC_NO,  SHIFT(KC_INS),  KC_NO,    KC_FN7,  KC_PGUP,  KC_NO,    KC_PGDN,  KC_MPRV,  KC_VOLD,  \
+  KC_NO,    KC_NO,    KC_NO,  KC_NO,  KC_TRNS,        KC_TRNS,  KC_FN8,  KC_FN9,   KC_NO,    KC_NO,    KC_NO,    KC_MUTE,  \
   KC_TRNS,  KC_TRNS)
 
 #define LAYER_FUNC CUSTOM_KEYMAP(\
@@ -62,16 +62,33 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 const uint16_t PROGMEM fn_actions[] = {
-  [0] = ACTION_FUNCTION(BOOTLOADER), // reset to bootloader
-  [1] = ACTION_LAYER_MOMENTARY(1),   // to LAYER_DIGITS
-  [2] = ACTION_LAYER_MOMENTARY(2),   // to LAYER_NAV
-  [3] = ACTION_LAYER_MOMENTARY(3),   // to LAYER_FUNC
-  [4] = ACTION_LAYER_TOGGLE(4),      // to LAYER_DVORAK
+  [0] = ACTION_FUNCTION(BOOTLOADER),    // reset to bootloader
+  [1] = ACTION_LAYER_MOMENTARY(1),      // to LAYER_DIGITS
+  [2] = ACTION_LAYER_MOMENTARY(2),      // to LAYER_NAV
+  [3] = ACTION_LAYER_MOMENTARY(3),      // to LAYER_FUNC
+  [4] = ACTION_LAYER_TOGGLE(4),         // to LAYER_DVORAK
+  [5] = ACTION_MACRO(1),
+  [6] = ACTION_MACRO(2),
+  [7] = ACTION_MACRO(3),
+  [8] = ACTION_MACRO(4),
+  [9] = ACTION_MACRO(5)
 };
 
 void action_function(keyrecord_t *record, uint8_t id, uint8_t opt)
 {
-  if (id == BOOTLOADER) {
-    bootloader();
-  }
+  if (id == BOOTLOADER) { bootloader(); }
 }
+
+const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) // this is the function signature -- just copy/paste it into your keymap file as it is.
+{
+  if (record->event.pressed) {
+    switch(id) {
+      case 1: return MACRO(T(LBRC), T(Q), END); break;
+      case 2: return MACRO(T(RBRC), T(Q), END); break;
+      case 3: return MACRO(T(LBRC), T(C), END); break;
+      case 4: return MACRO(T(RBRC), T(C), END); break;
+      case 5: return MACRO(D(LCTRL), T(SPACE), U(LCTRL), T(LBRC), END); break;
+    }
+  }
+  return MACRO_NONE;
+};
